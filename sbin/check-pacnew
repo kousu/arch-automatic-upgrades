@@ -2,8 +2,8 @@
 # find all the cruft pacman leaves around that it doesn't know how to merge
 # tip: put this in your crontab, so you get regular reports about issues
 # -> 
-(find /etc -name "*.pacnew"; find /usr/ -name "*.pacnew") |
- #tee /tmp/pacman-fails |
+(find /etc /usr -name "*.pacnew"; ) |
+ #tee /tmp/pacman-fails | # DEBUG
  while read f; do
   # for sensitive files, only output the fact of the change, not its contents
   # this is a weird way to test for this but it's the best I could find; test(1) doesn't cover this
@@ -17,6 +17,5 @@
     # $f is not world-readable
     SECRET="-q"
   fi
-  diff $SECRET -u --color $(echo $f | sed s/.pacnew//) $f;
+  diff $SECRET -u --color "${f%.pacnew}" "$f";
 done
-
