@@ -1,0 +1,22 @@
+#!/bin/sh
+# find all the cruft pacman leaves around that it doesn't know how to merge
+# tip: put this in your crontab, so you get regular reports about issues
+# -> 
+(find /etc -name "*.pacnew"; find /usr/ -name "*.pacnew") |
+ #tee /tmp/pacman-fails |
+ while read f; do
+  # for sensitive files, only output the fact of the change, not its contents
+  # this is a weird way to test for this but it's the best I could find; test(1) doesn't cover this
+  # other options in https://www.unix.com/shell-programming-and-scripting/155549-check-if-file-readable-others.html
+  #
+  # also do we maybe want to, I dunno, do something?
+  if [ -n "$( find "$f" -perm -o=r )" ]; then
+    # $f is world-readable
+    SECRET=""
+  else
+    # $f is not world-readable
+    SECRET="-q"
+  fi
+  diff $SECRET -u --color $(echo $f | sed s/.pacnew//) $f;
+done
+
