@@ -59,7 +59,7 @@ This does the same, for arch.
     Its work ends up under `~automatic-upgrades/.local/share/pikaur/aur_repos/` and under `/tmp`
 
     ```
-    adduser -m automatic-upgrades
+    useradd -m automatic-upgrades
     echo 'automatic-upgrades ALL=(ALL) NOPASSWD: /usr/bin/pacman' > /etc/sudoers.d/automatic-upgrades
     ```
 
