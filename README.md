@@ -44,7 +44,7 @@ This does the same, for arch.
 1. Install [pikaur](https://aur.archlinux.org/packages/pikaur) from the AUR; this is a bit of a manual process, but luckily you only need to do this once, because every other update, including pikaur itself, will be handled by pikaur:
 
     ```
-    sudo pacman -S git pyalpm base-devel
+    sudo pacman -S git pyalpm python-commonmark base-devel
     curl -JLO https://aur.archlinux.org/cgit/aur.git/snapshot/pikaur.tar.gz
     tar -zxvf pikaur.tar.gz
     cd pikaur*
