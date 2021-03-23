@@ -77,8 +77,9 @@ This does the same, for arch.
 
     ```
     sudo pacman -S reflector
-    sudo tee -a /etc/cron.d/ <<EOF
-    15 17 */13 * * reflector -c <your-country> -f 3 > /etc/pacman.d/mirrorlist
+    sudo tee -a /etc/cron.d/automatic-upgrades <<EOF
+    # the cp is to ensure a crash in reflector doesn't break pacman
+    15 17 */13 * * reflector -c <your-country> -f 3 > /tmp/mirrorlist && cp /tmp/mirrorlist /etc/pacman.d/mirrorlist
     EOF
     ```
     
