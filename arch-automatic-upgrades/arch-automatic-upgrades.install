@@ -1,0 +1,7 @@
+post_install() {
+	systemctl enable --now arch-automatic-upgrades.timer
+}
+
+pre_remove() {
+	systemctl disable --now arch-automatic-upgrades.timer
+}

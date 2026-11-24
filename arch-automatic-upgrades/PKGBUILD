@@ -1,0 +1,24 @@
+pkgname=arch-automatic-upgrades
+pkgdesc="unattended upgrades"
+
+# load common settings; be aware if you ever split up this repo.
+[ -f ../lib/lib.PKGBUILD ] && cp -lf ../lib/lib.PKGBUILD .lib.PKGBUILD
+. .lib.PKGBUILD || exit 1
+
+depends=(
+  pacman-contrib  # pacdiff
+  rebuild-detector
+  systemd
+)
+
+optdepends=(
+  'arch-automatic-upgrades-aur: upgrade and rebuild AUR packages with pikaur'
+  'etckeeper: track config changes made by unattended upgrades'
+  'smtp-forwarder: email root when an automatic upgrade fails'
+)
+
+package() {
+  _package
+
+  install -Dm644 "${startdir}"/README.md "${pkgdir}"/usr/share/doc/${pkgname}/README.md
+}

@@ -1,0 +1,20 @@
+pkgname=arch-automatic-upgrades-aur
+pkgdesc="unattended upgrades: also upgrade and rebuild AUR packages"
+
+# load common settings; be aware if you ever split up this repo.
+[ -f ../lib/lib.PKGBUILD ] && cp -lf ../lib/lib.PKGBUILD .lib.PKGBUILD
+. .lib.PKGBUILD || exit 1
+
+depends=(
+  arch-automatic-upgrades
+  pikaur
+  sudo
+  systemd
+)
+
+package() {
+  _package
+
+  chmod 750 "${pkgdir}"/etc/sudoers.d
+  chmod 600 "${pkgdir}"/etc/sudoers.d/*
+}

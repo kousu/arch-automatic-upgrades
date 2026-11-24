@@ -1,0 +1,11 @@
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Recording upgraded packages for arch-automatic-upgrades
+When = PostTransaction
+NeedsTargets
+# append, because one pikaur run can be several pacman transactions
+Exec = /bin/sh -c 'cat >> /run/automatic-upgrades/packages'

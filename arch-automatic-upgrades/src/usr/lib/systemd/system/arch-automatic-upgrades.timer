@@ -1,0 +1,12 @@
+[Unit]
+Description=Upgrade the system and reboot
+
+[Timer]
+# once a week, at a random moment that's fixed per machine,
+# so a fleet doesn't all upgrade (and reboot) at once
+OnCalendar=weekly
+RandomizedDelaySec=1w
+FixedRandomDelay=true
+
+[Install]
+WantedBy=timers.target

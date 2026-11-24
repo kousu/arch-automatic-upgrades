@@ -1,0 +1,28 @@
+[Unit]
+Description=Upgrade the system, including AUR packages, then reboot
+Documentation=file:///usr/share/doc/arch-automatic-upgrades/README.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/arch-automatic-upgrades -q
+
+# warn about config files that need merging (.pacnew, .pacsave)
+ExecStartPost=-/bin/sh -c '\
+	command -v sendmail >/dev/null || exit 0; \
+	pacdiff -o | { \
+# Bail unless there is *some* input
+		read -r first || exit 0; \
+		{ printf "Subject: config files to merge on %H\n\n%%s\n" "$$first"; cat; printf "\nRun pacdiff\n"; } | sendmail root; \
+	}'
+ExecStartPost=reboot
+
+# send mail on failure, like cronjobs would
+# ($$ escapes $ so the shell, not systemd, expands these)
+ExecStopPost=/bin/sh -c '\
+	[ "$$SERVICE_RESULT" = success ] || \
+	! command -v sendmail >/dev/null || \
+	{ printf "Subject: automatic-upgrade failed on %H\n\n"; \
+	  journalctl -o cat --no-pager _SYSTEMD_INVOCATION_ID="$$INVOCATION_ID"; \
+	} | sendmail root'

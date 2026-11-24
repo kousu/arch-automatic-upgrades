@@ -1,0 +1,1 @@
+automatic-upgrades ALL=(ALL) NOPASSWD: /usr/bin/pikaur
